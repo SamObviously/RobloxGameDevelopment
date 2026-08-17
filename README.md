@@ -1,60 +1,65 @@
-# 📖 Game Dev Diary & Visual Journal
+# 🎮 Roblox Survival Game - Dev Diary
 
-A clean, public web diary for documenting your daily game development journey with **pictures, video clips, and text reflections**. 
-
-> 🔒 **100% Code Privacy**: Your game project and actual source code stay private on your computer. This repository only hosts your public dev diary website for anyone on the internet to follow!
-
----
-
-## 🌟 How to Post Your Daily Updates
-
-### Option 1: Using the Website (Fastest)
-1. Run `npm run dev` and open the site.
-2. Click **`+ Write Diary Entry`** in the top-right corner.
-3. Type what you worked on, select your screenshot or video file, and click **`Post to Diary`**.
-4. Click **`Export devlogs.ts`** or **`Copy Snippet`** to update [`src/data/devlogs.ts`](file:///d:/Personal/Documents/ai/Privateserver/Gitty/src/data/devlogs.ts).
-
-### Option 2: Directly in Code
-1. Drop your screenshot or clip in [`public/footage/`](file:///d:/Personal/Documents/ai/Privateserver/Gitty/public/footage) (e.g. `public/footage/day-1.png`).
-2. Add a new entry to the array in [`src/data/devlogs.ts`](file:///d:/Personal/Documents/ai/Privateserver/Gitty/src/data/devlogs.ts):
-   ```ts
-   {
-     id: "day-2",
-     day: 2,
-     date: "2026-08-18",
-     title: "Day 2: Drew the First Level Tiles & Lighting",
-     summary: "Worked on drawing the forest tileset in Aseprite and testing normal map lighting in the engine. Really happy with how atmospheric it looks!",
-     bulletPoints: [
-       "Created 16x16 mossy stone wall tiles",
-       "Set up dynamic point lights with gentle flicker effect"
-     ],
-     tags: ["PixelArt", "Lighting", "Environment"],
-     media: [
-       {
-         id: "m2-1",
-         type: "image",
-         url: "footage/day-2.png",
-         caption: "Forest level lighting test"
-       }
-     ]
-   }
-   ```
-3. Push to GitHub:
-   ```bash
-   git add .
-   git commit -m "Day 2 diary update"
-   git push origin main
-   ```
+> Daily progress, screenshots, and footage by **[@erdongsam](https://x.com/erdongsam)**.  
+> 🌐 **Live Website**: [https://samobviously.github.io/RobloxGameDevelopment/](https://samobviously.github.io/RobloxGameDevelopment/)
 
 ---
 
-## 🌐 Publishing to GitHub Pages
+## 🌊 Day 3 (Aug 17, 2026): Deep Cold Ocean & Cave System
 
-1. Push your repository to GitHub.
-2. In your GitHub repository:
-   - Go to **Settings** → **Pages** (left sidebar).
-   - Under **Build and deployment > Source**, select **GitHub Actions**.
-3. Your public diary is live at:
-   ```
-   https://<your-username>.github.io/<your-repo-name>/
-   ```
+Expanding the map today! 🌊❄️  
+I just finished implementing two brand-new biomes: the **Deep Cold Ocean** (complete with brand new mobs) and an **underground Cave system**.
+
+### 📸 Screenshots
+<p align="center">
+  <img src="public/footage/day-3-deep-cold-ocean-biome.jpg" width="48%" alt="Deep Cold Ocean Biome" />
+  <img src="public/footage/day-3-underground-cave-system.jpg" width="48%" alt="Underground Cave System" />
+</p>
+
+- **Key Updates:**
+  - Implemented Deep Cold Ocean biome with custom underwater atmosphere and fog
+  - Added brand new aquatic & cold-ocean mobs
+  - Constructed subterranean underground Cave system for exploration
+- **Tags:** `#RobloxDev` `#Biomes` `#CaveSystem` `#OceanBiome` `#Mobs`
+
+---
+
+## 🌲 Day 2 (Aug 16, 2026): Resource Gathering, Axes & Spades
+
+Today was all about the resource grind! 🌲⚒️  
+I just fully implemented **Axes and Spades**! Players will progress through 4 different crafting tiers for each weapon: **Stone, Copper, Iron, and Titanium** *(currently starting with Stone tier)*.
+
+### 🎥 Gameplay Footage
+- 🪓 [Watch Axe Tree Chopping Video](public/footage/day-2-axes-spades-harvesting.mp4)
+- ⛏️ [Watch Spade Digging & Resource Collection Video](public/footage/day-2-resource-tier-progression.mp4)
+
+- **Key Updates:**
+  - Implemented tree chopping and wood harvesting mechanics with Axes
+  - Implemented terrain digging and resource gathering with Spades
+  - Configured 4-tier crafting progression system (Stone, Copper, Iron, Titanium)
+  - Added tool hit feedback, swinging animations, and particle effects
+- **Tags:** `#RobloxDev` `#ResourceGrind` `#Crafting` `#Tools` `#Axes` `#Spades`
+
+---
+
+## 🎮 Day 1 (Aug 15, 2026): Project Launch & Core Survival Systems
+
+Day 1 of documenting my Roblox survival game! 🎮  
+I'm already a few weeks into development, and I have completed the **GUI, animals/mobs, crafting mechanics, shovel, hotbar, and tools**.
+
+### 📸 Screenshots
+<p align="center">
+  <img src="public/footage/day-1-gui-crafting.jpg" width="48%" alt="GUI and Crafting" />
+  <img src="public/footage/day-1-hotbar-tools.jpg" width="48%" alt="Hotbar and Tools" />
+</p>
+<p align="center">
+  <img src="public/footage/day-1-animals-world.jpg" width="48%" alt="Animals and World" />
+  <img src="public/footage/day-1-gameplay-preview.jpg" width="48%" alt="Gameplay Preview" />
+</p>
+
+- **Key Updates:**
+  - Designed custom survival GUI, health/hunger gauges, and HUD
+  - Implemented inventory hotbar with quick-select tool slots
+  - Added wild animals with roaming and detection mechanics
+  - Created recipe-based Crafting system and tool interactions
+- **Tags:** `#RobloxDev` `#ProjectLaunch` `#GUI` `#Hotbar` `#Animals` `#SurvivalGame`
