@@ -20,7 +20,7 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
   onOpenModal,
   onOpenNewEntry
 }) => {
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc')
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('asc')
   const [viewMode, setViewMode] = useState<'cards' | 'compact'>('cards')
 
   // Extract all unique tags

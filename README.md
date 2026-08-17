@@ -1,44 +1,7 @@
 # 🎮 Roblox Survival Game - Dev Diary
 
-> Daily progress, screenshots, and footage by **[@erdongsam](https://x.com/erdongsam)**.  
-> 🌐 **Live Website**: [https://samobviously.github.io/RobloxGameDevelopment/](https://samobviously.github.io/RobloxGameDevelopment/)
-
----
-
-## 🌊 Day 3 (Aug 17, 2026): Deep Cold Ocean & Cave System
-
-Expanding the map today! 🌊❄️  
-I just finished implementing two brand-new biomes: the **Deep Cold Ocean** (complete with brand new mobs) and an **underground Cave system**.
-
-### 📸 Screenshots
-<p align="center">
-  <img src="public/footage/day-3-deep-cold-ocean-biome.jpg" width="48%" alt="Deep Cold Ocean Biome" />
-  <img src="public/footage/day-3-underground-cave-system.jpg" width="48%" alt="Underground Cave System" />
-</p>
-
-- **Key Updates:**
-  - Implemented Deep Cold Ocean biome with custom underwater atmosphere and fog
-  - Added brand new aquatic & cold-ocean mobs
-  - Constructed subterranean underground Cave system for exploration
-- **Tags:** `#RobloxDev` `#Biomes` `#CaveSystem` `#OceanBiome` `#Mobs`
-
----
-
-## 🌲 Day 2 (Aug 16, 2026): Resource Gathering, Axes & Spades
-
-Today was all about the resource grind! 🌲⚒️  
-I just fully implemented **Axes and Spades**! Players will progress through 4 different crafting tiers for each weapon: **Stone, Copper, Iron, and Titanium** *(currently starting with Stone tier)*.
-
-### 🎥 Gameplay Footage
-- 🪓 [Watch Axe Tree Chopping Video](public/footage/day-2-axes-spades-harvesting.mp4)
-- ⛏️ [Watch Spade Digging & Resource Collection Video](public/footage/day-2-resource-tier-progression.mp4)
-
-- **Key Updates:**
-  - Implemented tree chopping and wood harvesting mechanics with Axes
-  - Implemented terrain digging and resource gathering with Spades
-  - Configured 4-tier crafting progression system (Stone, Copper, Iron, Titanium)
-  - Added tool hit feedback, swinging animations, and particle effects
-- **Tags:** `#RobloxDev` `#ResourceGrind` `#Crafting` `#Tools` `#Axes` `#Spades`
+> Documenting daily game progress, screenshots, and gameplay footage by **[@erdongsam](https://x.com/erdongsam)**.  
+> 🌐 **Interactive Devlog Website**: [https://samobviously.github.io/RobloxGameDevelopment/](https://samobviously.github.io/RobloxGameDevelopment/)
 
 ---
 
@@ -63,3 +26,45 @@ I'm already a few weeks into development, and I have completed the **GUI, animal
   - Added wild animals with roaming and detection mechanics
   - Created recipe-based Crafting system and tool interactions
 - **Tags:** `#RobloxDev` `#ProjectLaunch` `#GUI` `#Hotbar` `#Animals` `#SurvivalGame`
+
+---
+
+## 🌲 Day 2 (Aug 16, 2026): Resource Gathering, Axes & Spades
+
+Today was all about the resource grind! 🌲⚒️  
+I just fully implemented **Axes and Spades**! Players will progress through 4 different crafting tiers for each weapon: **Stone, Copper, Iron, and Titanium** *(currently starting with Stone tier)*.
+
+### 🎥 Gameplay Footage
+<p align="center">
+  <img src="public/footage/day-2-axes-spades-harvesting.gif" width="48%" alt="Tree Chopping & Axe Harvesting" />
+  <img src="public/footage/day-2-resource-tier-progression.gif" width="48%" alt="Spade Digging & Resource Collection" />
+</p>
+
+- **Raw Video Files:**
+  - 🪓 [Download Axe Tree Chopping Video (.mp4)](public/footage/day-2-axes-spades-harvesting.mp4)
+  - ⛏️ [Download Spade Digging Video (.mp4)](public/footage/day-2-resource-tier-progression.mp4)
+- **Key Updates:**
+  - Implemented tree chopping and wood harvesting mechanics with Axes
+  - Implemented terrain digging and resource gathering with Spades
+  - Configured 4-tier crafting progression system (Stone, Copper, Iron, Titanium)
+  - Added tool hit feedback, swinging animations, and particle effects
+- **Tags:** `#RobloxDev` `#ResourceGrind` `#Crafting` `#Tools` `#Axes` `#Spades`
+
+---
+
+## 🌊 Day 3 (Aug 17, 2026): Deep Cold Ocean & Cave System
+
+Expanding the map today! 🌊❄️  
+I just finished implementing two brand-new biomes: the **Deep Cold Ocean** (complete with brand new mobs) and an **underground Cave system**.
+
+### 📸 Screenshots
+<p align="center">
+  <img src="public/footage/day-3-deep-cold-ocean-biome.jpg" width="48%" alt="Deep Cold Ocean Biome" />
+  <img src="public/footage/day-3-underground-cave-system.jpg" width="48%" alt="Underground Cave System" />
+</p>
+
+- **Key Updates:**
+  - Implemented Deep Cold Ocean biome with custom underwater atmosphere and fog
+  - Added brand new aquatic & cold-ocean mobs
+  - Constructed subterranean underground Cave system for exploration
+- **Tags:** `#RobloxDev` `#Biomes` `#CaveSystem` `#OceanBiome` `#Mobs`
