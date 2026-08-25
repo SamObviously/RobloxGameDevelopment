@@ -26,38 +26,37 @@ export const MediaModal: React.FC<MediaModalProps> = ({ media, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 transition-all"
       onClick={onClose}
     >
       <div 
-        className="relative max-w-5xl w-full bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+        className="relative max-w-6xl w-full bg-zinc-950/80 border border-white/[0.1] rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header bar */}
-        <div className="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+        {/* Top bar (Apple / X style header) */}
+        <div className="px-5 py-3.5 border-b border-white/[0.08] flex items-center justify-between bg-black/40 backdrop-blur-md">
+          <div className="flex items-center gap-2.5">
+            <span className="px-3 py-0.5 rounded-full text-xs font-mono bg-white/[0.08] text-white border border-white/[0.1] uppercase">
               {media.type}
             </span>
-            <p className="text-sm font-medium text-zinc-300 truncate max-w-md">
-              {media.caption || "Footage preview"}
+            <p className="text-xs sm:text-sm font-medium text-zinc-300 truncate max-w-md">
+              {media.caption || "Footage Preview"}
             </p>
           </div>
+          
           <div className="flex items-center gap-2">
-            {media.type !== 'youtube' && (
-              <a
-                href={media.url}
-                target="_blank"
-                rel="noreferrer"
-                className="p-1.5 text-zinc-400 hover:text-zinc-100 rounded-lg hover:bg-zinc-800 transition-colors"
-                title="Open raw file"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
+            <a
+              href={media.url}
+              target="_blank"
+              rel="noreferrer"
+              className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/[0.08] transition-colors"
+              title="Open full resolution"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
             <button
               onClick={onClose}
-              className="p-1.5 text-zinc-400 hover:text-zinc-100 rounded-lg hover:bg-zinc-800 transition-colors"
+              className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/[0.08] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -65,35 +64,26 @@ export const MediaModal: React.FC<MediaModalProps> = ({ media, onClose }) => {
         </div>
 
         {/* Content area */}
-        <div className="flex-1 bg-black flex items-center justify-center overflow-auto p-2">
+        <div className="flex-1 bg-black flex items-center justify-center overflow-auto p-2 sm:p-4">
           {media.type === 'video' ? (
             <video
               src={media.url}
               controls
               autoPlay
-              className="max-w-full max-h-[75vh] object-contain rounded-lg"
+              className="max-w-full max-h-[75vh] object-contain rounded-2xl"
             />
-          ) : media.type === 'youtube' ? (
-            <div className="w-full aspect-video">
-              <iframe
-                src={media.url.replace('watch?v=', 'embed/')}
-                title="YouTube clip"
-                className="w-full h-full border-0"
-                allowFullScreen
-              />
-            </div>
           ) : (
             <img
               src={media.url}
               alt={media.caption || "Screenshot"}
-              className="max-w-full max-h-[75vh] object-contain rounded-lg"
+              className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
             />
           )}
         </div>
 
-        {/* Caption */}
+        {/* Bottom Caption */}
         {media.caption && (
-          <div className="p-3 bg-zinc-900/70 border-t border-zinc-800 text-xs text-zinc-400">
+          <div className="px-5 py-3 bg-black/60 border-t border-white/[0.06] text-xs text-zinc-400 text-center">
             {media.caption}
           </div>
         )}

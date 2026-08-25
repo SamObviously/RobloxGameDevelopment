@@ -1,21 +1,30 @@
 import React from 'react'
-import { BookOpen, Plus, HelpCircle, Flame, Search } from 'lucide-react'
+import { Search, Flame } from 'lucide-react'
 import type { GameProfile } from '../types/devlog'
 
 interface HeaderProps {
   gameProfile: GameProfile
   totalDays: number
-  totalEntries: number
   searchQuery: string
   onSearchChange: (q: string) => void
-  onOpenNewEntry: () => void
-  onOpenGuide: () => void
-  onEditProfile: () => void
 }
 
-const XIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+const XIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+)
+
+const VerifiedBadge = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none">
+    <path
+      d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6s-2.95.875-3.6 2.148c-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5s.875 2.95 2.148 3.6c-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238.65 1.273 2.02 2.148 3.6 2.148s2.95-.875 3.6-2.148c.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6z"
+      fill="#1D9BF0"
+    />
+    <path
+      d="M9.8 16.2l-3.5-3.5 1.4-1.4 2.1 2.1 5.9-5.9 1.4 1.4-7.3 7.3z"
+      fill="#FFFFFF"
+    />
   </svg>
 )
 
@@ -28,76 +37,66 @@ const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
 export const Header: React.FC<HeaderProps> = ({
   gameProfile,
   totalDays,
-  totalEntries,
   searchQuery,
-  onSearchChange,
-  onOpenNewEntry,
-  onOpenGuide,
-  onEditProfile
+  onSearchChange
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-800">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-        {/* Left: Game Title / Dev Diary badge */}
+    <header className="sticky top-0 z-50 aero-glass border-b border-white/[0.12] transition-all">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        {/* Left: Branding & Creator Info */}
         <div className="flex items-center gap-3">
-          <button 
-            onClick={onEditProfile}
-            className="flex items-center gap-2.5 text-left group cursor-pointer"
-            title="Click to edit game title & info"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform shadow-inner">
-              <BookOpen className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-zinc-900 border border-emerald-500/30 flex items-center justify-center text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] shrink-0">
+            <span className="font-bold font-mono text-sm tracking-tight text-emerald-300">SD</span>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-white text-sm md:text-base tracking-tight">
+                SamObviously
+              </span>
+              <VerifiedBadge />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors text-base md:text-lg tracking-tight">
-                  {gameProfile.title}
-                </span>
-                <span className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Dev Diary
-                </span>
-              </div>
-              <p className="text-xs text-zinc-400 font-mono flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
-                <span>Day {totalDays}</span>
-                <span className="text-zinc-600">•</span>
-                <span>{totalEntries} {totalEntries === 1 ? 'diary entry' : 'diary entries'}</span>
-              </p>
-            </div>
-          </button>
+            <p className="text-xs text-zinc-400 font-mono flex items-center gap-1.5">
+              <span>@erdongsam</span>
+              <span className="text-zinc-600">•</span>
+              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                <Flame className="w-3 h-3 text-amber-400" />
+                Day {totalDays}
+              </span>
+            </p>
+          </div>
         </div>
 
-        {/* Center: Search input */}
-        <div className="flex-1 max-w-xs relative hidden md:block">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Center: Search input (Aero Glass search pill) */}
+        <div className="flex-1 max-w-sm relative hidden sm:block">
+          <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search diary entries, topics, pictures..."
+            placeholder="Search diary (e.g. biomes, tools, weather)..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 bg-zinc-900 border border-zinc-800 focus:border-emerald-500/50 rounded-xl text-xs text-zinc-200 placeholder-zinc-500 outline-none transition-all"
+            className="w-full pl-10 pr-8 py-2 aero-glass-pill rounded-full text-xs text-white placeholder-zinc-400 outline-none focus:border-emerald-400/40 focus:ring-1 focus:ring-emerald-400/30 transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-zinc-500 hover:text-zinc-300 cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-white cursor-pointer"
             >
               ✕
             </button>
           )}
         </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2">
+        {/* Right: X Follow Pill & GitHub Link */}
+        <div className="flex items-center gap-2.5">
           {gameProfile.links?.twitter && (
             <a
               href={gameProfile.links.twitter}
               target="_blank"
               rel="noreferrer"
-              className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-xl transition-colors"
-              title="Follow @erdongsam on X"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-white to-zinc-200 text-black hover:from-zinc-100 hover:to-zinc-300 rounded-full text-xs font-bold transition-all shadow-[0_4px_16px_rgba(255,255,255,0.2),inset_0_1px_0_rgba(255,255,255,0.8)] active:scale-95 cursor-pointer"
             >
-              <XIcon className="w-4 h-4" />
+              <XIcon className="w-3.5 h-3.5" />
+              <span>Follow @erdongsam</span>
             </a>
           )}
 
@@ -106,29 +105,12 @@ export const Header: React.FC<HeaderProps> = ({
               href={gameProfile.links.github}
               target="_blank"
               rel="noreferrer"
-              className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-xl transition-colors"
+              className="p-2.5 text-zinc-300 hover:text-white aero-glass-pill rounded-full transition-all"
               title="GitHub Repository"
             >
               <GithubIcon className="w-4 h-4" />
             </a>
           )}
-
-          <button
-            onClick={onOpenGuide}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-zinc-100 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl transition-colors cursor-pointer"
-            title="How this diary works"
-          >
-            <HelpCircle className="w-4 h-4 text-zinc-400" />
-            <span className="hidden sm:inline">How to Post</span>
-          </button>
-
-          <button
-            onClick={onOpenNewEntry}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-zinc-950 bg-emerald-400 hover:bg-emerald-300 active:scale-95 rounded-xl shadow-lg shadow-emerald-500/10 transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>+ Write Diary Entry</span>
-          </button>
         </div>
       </div>
     </header>

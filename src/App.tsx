@@ -1,103 +1,59 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { DevlogFeed } from './components/DevlogFeed'
 import { MediaModal } from './components/MediaModal'
-import { NewEntryModal } from './components/NewEntryModal'
-import { GuideModal } from './components/GuideModal'
-import { EditProfileModal } from './components/EditProfileModal'
 import { Footer } from './components/Footer'
 import { initialDevlogs } from './data/devlogs'
 import { initialGameProfile } from './data/gameProfile'
-import type { DevlogEntry, GameProfile, MediaItem } from './types/devlog'
+import type { MediaItem } from './types/devlog'
 
 export function App() {
-  // Load devlogs from localStorage if present, else fallback to initialDevlogs
-  const [devlogs, setDevlogs] = useState<DevlogEntry[]>(() => {
-    const saved = localStorage.getItem('gamedev_devlogs')
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved)
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed
-      } catch {}
-    }
-    return initialDevlogs
-  })
+  const [devlogs] = useState(initialDevlogs)
+  const [gameProfile] = useState(initialGameProfile)
 
-  // Load game profile from localStorage if present, else fallback to initialGameProfile
-  const [gameProfile, setGameProfile] = useState<GameProfile>(() => {
-    const saved = localStorage.getItem('gamedev_profile')
-    if (saved) {
-      try {
-        return JSON.parse(saved)
-      } catch {}
-    }
-    return initialGameProfile
-  })
-
-  // Modal states
+  // Lightbox Modal state
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null)
-  const [isNewEntryOpen, setIsNewEntryOpen] = useState(false)
-  const [isGuideOpen, setIsGuideOpen] = useState(false)
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
 
-  // Filter states
+  // Filter & Search states
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
-  // Sync to localStorage
-  useEffect(() => {
-    localStorage.setItem('gamedev_devlogs', JSON.stringify(devlogs))
-  }, [devlogs])
-
-  useEffect(() => {
-    localStorage.setItem('gamedev_profile', JSON.stringify(gameProfile))
-  }, [gameProfile])
-
-  // Count total media across all devlogs
+  // Calculate total media items and max days
   const totalMediaCount = devlogs.reduce((acc, entry) => acc + (entry.media?.length || 0), 0)
-  
-  // Calculate highest day number
   const maxDay = devlogs.reduce((max, e) => Math.max(max, e.day), 0)
-  const nextDayNumber = maxDay + 1
 
-  const handleSaveEntry = (newEntry: DevlogEntry) => {
-    // Replace if exists (same day) or prepend
-    const existingIndex = devlogs.findIndex(e => e.day === newEntry.day)
-    if (existingIndex >= 0) {
-      const updated = [...devlogs]
-      updated[existingIndex] = newEntry
-      setDevlogs(updated)
-    } else {
-      setDevlogs([newEntry, ...devlogs])
+  const handleJumpToFirst = () => {
+    const el = document.getElementById('day-1')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
-  const handleSaveProfile = (updated: GameProfile) => {
-    setGameProfile(updated)
+  const handleJumpToLatest = () => {
+    const el = document.getElementById(`day-${maxDay}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-emerald-500/20 selection:text-emerald-300">
-      {/* Top Navbar */}
+    <div className="min-h-screen bg-black text-white flex flex-col font-sans selection:bg-emerald-500/25 selection:text-emerald-300 antialiased">
+      {/* Apple / X Frosted Header */}
       <Header
         gameProfile={gameProfile}
         totalDays={maxDay}
-        totalEntries={devlogs.length}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        onOpenNewEntry={() => setIsNewEntryOpen(true)}
-        onOpenGuide={() => setIsGuideOpen(true)}
-        onEditProfile={() => setIsEditProfileOpen(true)}
       />
 
-      {/* Hero Banner */}
+      {/* Hero / Game & Creator Profile */}
       <Hero
         gameProfile={gameProfile}
         totalDays={maxDay}
         totalMediaCount={totalMediaCount}
-        onEditProfile={() => setIsEditProfileOpen(true)}
-        onOpenNewEntry={() => setIsNewEntryOpen(true)}
+        onJumpToFirst={handleJumpToFirst}
+        onJumpToLatest={handleJumpToLatest}
       />
 
       {/* Main Feed */}
@@ -108,7 +64,6 @@ export function App() {
           selectedTag={selectedTag}
           onSelectTag={setSelectedTag}
           onOpenModal={(media) => setSelectedMedia(media)}
-          onOpenNewEntry={() => setIsNewEntryOpen(true)}
         />
       </main>
 
@@ -119,29 +74,6 @@ export function App() {
       <MediaModal
         media={selectedMedia}
         onClose={() => setSelectedMedia(null)}
-      />
-
-      {/* Log Today's Progress Modal */}
-      <NewEntryModal
-        isOpen={isNewEntryOpen}
-        onClose={() => setIsNewEntryOpen(false)}
-        nextDayNumber={nextDayNumber}
-        onSaveEntry={handleSaveEntry}
-        allEntries={devlogs}
-      />
-
-      {/* Deployment & Footage Guide Modal */}
-      <GuideModal
-        isOpen={isGuideOpen}
-        onClose={() => setIsGuideOpen(false)}
-      />
-
-      {/* Game Profile Editor Modal */}
-      <EditProfileModal
-        isOpen={isEditProfileOpen}
-        onClose={() => setIsEditProfileOpen(false)}
-        profile={gameProfile}
-        onSaveProfile={handleSaveProfile}
       />
     </div>
   )

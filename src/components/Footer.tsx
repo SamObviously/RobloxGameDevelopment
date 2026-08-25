@@ -1,9 +1,16 @@
 import React from 'react'
+import { ArrowUp } from 'lucide-react'
 import type { GameProfile } from '../types/devlog'
 
 interface FooterProps {
   gameProfile: GameProfile
 }
+
+const XIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+)
 
 const GithubIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
@@ -12,27 +19,54 @@ const GithubIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
 )
 
 export const Footer: React.FC<FooterProps> = ({ gameProfile }) => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
-    <footer className="border-t border-zinc-800/80 bg-zinc-950 py-8 px-4 text-center text-xs text-zinc-500 font-mono">
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <span>{gameProfile.title} • Made by {gameProfile.devName}</span>
+    <footer className="border-t border-white/[0.08] bg-black py-12 px-4 text-xs text-zinc-500 font-sans">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="text-center sm:text-left">
+          <p className="text-zinc-300 font-semibold text-sm mb-1">
+            {gameProfile.title}
+          </p>
+          <p className="text-zinc-500">
+            Documented by SamObviously (<a href="https://x.com/erdongsam" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white underline">@erdongsam</a>)
+          </p>
         </div>
+
         <div className="flex items-center gap-4">
-          <span>
-            Built for <strong className="text-zinc-400">GitHub Pages</strong>
-          </span>
+          {gameProfile.links?.twitter && (
+            <a
+              href={gameProfile.links.twitter}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+            >
+              <XIcon className="w-3.5 h-3.5" />
+              <span>X.com</span>
+            </a>
+          )}
+
           {gameProfile.links?.github && (
             <a
               href={gameProfile.links.github}
               target="_blank"
               rel="noreferrer"
-              className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-1"
+              className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
             >
               <GithubIcon className="w-3.5 h-3.5" />
-              <span>Source</span>
+              <span>GitHub</span>
             </a>
           )}
+
+          <button
+            onClick={scrollToTop}
+            className="flex items-center gap-1 p-2 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.08] transition-colors cursor-pointer"
+            title="Scroll to top"
+          >
+            <ArrowUp className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </footer>

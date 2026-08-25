@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { ArrowUpDown, LayoutList, CalendarDays, SearchX, Plus } from 'lucide-react'
+import { ArrowUpDown, LayoutGrid, LayoutList, SearchX, Film, Image as ImageIcon } from 'lucide-react'
 import type { DevlogEntry, MediaItem } from '../types/devlog'
 import { DevlogCard } from './DevlogCard'
 
@@ -9,7 +9,6 @@ interface DevlogFeedProps {
   selectedTag: string | null
   onSelectTag: (tag: string | null) => void
   onOpenModal: (media: MediaItem) => void
-  onOpenNewEntry: () => void
 }
 
 export const DevlogFeed: React.FC<DevlogFeedProps> = ({
@@ -17,11 +16,10 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
   searchQuery,
   selectedTag,
   onSelectTag,
-  onOpenModal,
-  onOpenNewEntry
+  onOpenModal
 }) => {
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('asc')
-  const [viewMode, setViewMode] = useState<'cards' | 'compact'>('cards')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [viewMode, setViewMode] = useState<'feed' | 'gallery'>('feed')
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -36,11 +34,9 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
   const filteredEntries = useMemo(() => {
     return entries
       .filter(entry => {
-        // Tag filter
         if (selectedTag && !entry.tags?.includes(selectedTag)) {
           return false
         }
-        // Search query filter
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase()
           const matchesTitle = entry.title.toLowerCase().includes(q)
@@ -53,22 +49,33 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
         return true
       })
       .sort((a, b) => {
-        return sortOrder === 'desc' ? b.day - a.day : a.day - b.day
+        return sortOrder === 'asc' ? a.day - b.day : b.day - a.day
       })
   }, [entries, selectedTag, searchQuery, sortOrder])
+
+  // Extract all media items for the Media Gallery view
+  const allMediaItems = useMemo(() => {
+    const items: Array<{ media: MediaItem; day: number; title: string }> = []
+    filteredEntries.forEach(entry => {
+      entry.media?.forEach(m => {
+        items.push({ media: m, day: entry.day, title: entry.title })
+      })
+    })
+    return items
+  }, [filteredEntries])
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Controls Bar: Tag filters, View toggle, Sort */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800/80">
-        {/* Tag Pills */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-5 border-b border-white/[0.08]">
+        {/* Tag Pills (Aero Glass pills) */}
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => onSelectTag(null)}
-            className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
               selectedTag === null
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                ? 'bg-gradient-to-b from-white to-zinc-200 text-black font-bold shadow-[0_2px_12px_rgba(255,255,255,0.25),inset_0_1px_0_rgba(255,255,255,0.8)]'
+                : 'aero-glass-pill text-zinc-300 hover:text-white'
             }`}
           >
             All Logs ({entries.length})
@@ -77,10 +84,10 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
             <button
               key={tag}
               onClick={() => onSelectTag(selectedTag === tag ? null : tag)}
-              className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                 selectedTag === tag
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                  ? 'bg-gradient-to-b from-emerald-300 to-teal-400 text-black font-bold shadow-[0_2px_12px_rgba(52,211,153,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]'
+                  : 'aero-glass-pill text-zinc-300 hover:text-white'
               }`}
             >
               #{tag}
@@ -88,75 +95,65 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
           ))}
         </div>
 
-        {/* View & Sort options */}
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        {/* View mode & Chronological Sort toggle */}
+        <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
           <button
-            onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800 rounded-lg transition-colors font-mono cursor-pointer"
+            onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs text-zinc-200 hover:text-white aero-glass-pill rounded-full transition-all font-medium cursor-pointer"
             title="Toggle sort order"
           >
-            <ArrowUpDown className="w-3.5 h-3.5" />
-            <span>{sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}</span>
+            <ArrowUpDown className="w-3.5 h-3.5 text-emerald-400" />
+            <span>{sortOrder === 'asc' ? 'Day 1 → 11' : 'Latest First'}</span>
           </button>
 
-          <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5">
+          <div className="flex items-center aero-glass-pill rounded-full p-0.5">
             <button
-              onClick={() => setViewMode('cards')}
-              className={`p-1 rounded-md text-xs transition-colors cursor-pointer ${
-                viewMode === 'cards' ? 'bg-zinc-800 text-zinc-200' : 'text-zinc-500 hover:text-zinc-300'
+              onClick={() => setViewMode('feed')}
+              className={`p-1.5 rounded-full text-xs transition-all cursor-pointer ${
+                viewMode === 'feed' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
               }`}
-              title="Full cards view"
+              title="Full Diary Feed"
             >
               <LayoutList className="w-3.5 h-3.5" />
             </button>
             <button
-              onClick={() => setViewMode('compact')}
-              className={`p-1 rounded-md text-xs transition-colors cursor-pointer ${
-                viewMode === 'compact' ? 'bg-zinc-800 text-zinc-200' : 'text-zinc-500 hover:text-zinc-300'
+              onClick={() => setViewMode('gallery')}
+              className={`p-1.5 rounded-full text-xs transition-all cursor-pointer ${
+                viewMode === 'gallery' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
               }`}
-              title="Compact timeline view"
+              title="Media Gallery View"
             >
-              <CalendarDays className="w-3.5 h-3.5" />
+              <LayoutGrid className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Feed content */}
+      {/* Main Content */}
       {filteredEntries.length === 0 ? (
-        <div className="text-center py-16 px-4 border border-dashed border-zinc-800 rounded-2xl bg-zinc-900/30">
-          <SearchX className="w-10 h-10 mx-auto text-zinc-600 mb-3" />
-          <h3 className="text-lg font-bold text-zinc-200 mb-1">No devlogs found</h3>
-          <p className="text-sm text-zinc-500 max-w-sm mx-auto mb-6">
-            {searchQuery || selectedTag 
-              ? "Try clearing your search query or tag filters to see all updates." 
-              : "No logs have been added yet. Add your first day's update now!"}
+        <div className="text-center py-20 px-4 aero-glass-card rounded-3xl">
+          <SearchX className="w-10 h-10 mx-auto text-zinc-500 mb-3" />
+          <h3 className="text-lg font-bold text-white mb-1">No logs match your search</h3>
+          <p className="text-sm text-zinc-400 max-w-sm mx-auto mb-6">
+            Try clearing your search query or tag filter to view all 11 days.
           </p>
-          <div className="flex items-center justify-center gap-3">
-            {(searchQuery || selectedTag) && (
-              <button
-                onClick={() => {
-                  onSelectTag(null)
-                }}
-                className="px-4 py-2 text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl transition-colors cursor-pointer"
-              >
-                Clear Filters
-              </button>
-            )}
+          {(searchQuery || selectedTag) && (
             <button
-              onClick={onOpenNewEntry}
-              className="px-4 py-2 text-xs font-semibold bg-emerald-400 hover:bg-emerald-300 text-zinc-950 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+              onClick={() => {
+                onSelectTag(null)
+              }}
+              className="px-5 py-2 text-xs font-semibold bg-white text-black rounded-full transition-all hover:bg-zinc-200 cursor-pointer shadow-md"
             >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>+ Add Today's Update</span>
+              Clear Filters
             </button>
-          </div>
+          )}
         </div>
-      ) : viewMode === 'cards' ? (
-        <div className="space-y-6">
+      ) : viewMode === 'feed' ? (
+        /* Feed View */
+        <div className="space-y-7">
           {filteredEntries.map(entry => (
             <DevlogCard
-              key={entry.id || entry.day}
+              key={entry.id}
               entry={entry}
               onOpenModal={onOpenModal}
               onTagClick={(tag) => onSelectTag(tag)}
@@ -164,33 +161,38 @@ export const DevlogFeed: React.FC<DevlogFeedProps> = ({
           ))}
         </div>
       ) : (
-        /* Compact Timeline View */
-        <div className="relative border-l border-zinc-800 ml-4 space-y-6">
-          {filteredEntries.map(entry => (
-            <div key={entry.id || entry.day} className="relative pl-6 group">
-              <div className="absolute -left-2 top-1.5 w-4 h-4 rounded-full bg-zinc-900 border-2 border-emerald-500 group-hover:bg-emerald-500 transition-colors" />
-              <div className="bg-zinc-900/60 hover:bg-zinc-900 border border-zinc-800 rounded-xl p-4 transition-all">
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="font-mono text-xs font-bold text-emerald-400">
-                    DAY {String(entry.day).padStart(2, '0')}
-                  </span>
-                  <span className="text-xs text-zinc-500 font-mono">{entry.date}</span>
-                </div>
-                <h3 className="text-base font-semibold text-zinc-100 mb-1">
-                  {entry.title}
-                </h3>
-                <p className="text-xs text-zinc-400 line-clamp-2 mb-2">
-                  {entry.summary}
-                </p>
-                {entry.tags && (
-                  <div className="flex flex-wrap gap-1">
-                    {entry.tags.map(tag => (
-                      <span key={tag} className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
-                        #{tag}
-                      </span>
-                    ))}
+        /* Immersive Media Gallery View */
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+          {allMediaItems.map((item, idx) => (
+            <div
+              key={idx}
+              className="relative aspect-square rounded-2xl overflow-hidden bg-black/60 border border-white/[0.12] cursor-pointer group shadow-lg transition-all hover:scale-[1.02]"
+              onClick={() => onOpenModal(item.media)}
+            >
+              {item.media.type === 'video' ? (
+                <div className="relative w-full h-full">
+                  <video
+                    src={item.media.url}
+                    className="w-full h-full object-cover"
+                    muted
+                    playsInline
+                  />
+                  <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px] flex items-center justify-center">
+                    <div className="p-2 rounded-full bg-black/70 text-white backdrop-blur-md">
+                      <Film className="w-4 h-4 text-emerald-400" />
+                    </div>
                   </div>
-                )}
+                </div>
+              ) : (
+                <img
+                  src={item.media.url}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-[11px] font-mono text-zinc-200 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="font-semibold">DAY {item.day}</span>
+                {item.media.type === 'video' ? <Film className="w-3.5 h-3.5 text-emerald-400" /> : <ImageIcon className="w-3.5 h-3.5 text-cyan-400" />}
               </div>
             </div>
           ))}
